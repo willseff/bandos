@@ -41,18 +41,25 @@ def generate_image(
         raise ValueError(f"Invalid aspect_ratio '{aspect_ratio}'. Must be one of {VALID_ASPECT_RATIOS}")
     if resolution not in VALID_RESOLUTIONS:
         raise ValueError(f"Invalid resolution '{resolution}'. Must be one of {VALID_RESOLUTIONS}")
+    # Note: aspect_ratio and resolution are passed as prompt hints until the SDK
+    # exposes a stable ImageGenerationConfig — include them in the prompt for now.
 
-    client = genai.Client(api_key=os.environ["GOOGLE_GENAI_API_KEY"])
+    project = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    if project:
+        client = genai.Client(
+            vertexai=True,
+            project=project,
+            location=os.environ.get("GOOGLE_CLOUD_LOCATION", "global"),
+        )
+    else:
+        client = genai.Client(api_key=os.environ["GOOGLE_GENAI_API_KEY"])
 
     start = time.time()
     response = client.models.generate_content(
-        model="gemini-2.0-flash-preview-image-generation",
+        model="gemini-3.1-flash-image-preview",
         contents=prompt,
         config=types.GenerateContentConfig(
             response_modalities=["IMAGE", "TEXT"],
-            image_generation_config=types.ImageGenerationConfig(
-                image_size=resolution,
-            ),
         ),
     )
     elapsed_ms = int((time.time() - start) * 1000)

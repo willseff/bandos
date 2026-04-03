@@ -8,7 +8,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
-    Real,
+    Float,
     String,
     Text,
     func,
@@ -66,7 +66,7 @@ class BrandAsset(Base):
     rules = relationship("BrandRule", back_populates="asset", cascade="all, delete-orphan")
 
     @property
-    def metadata(self):
+    def meta(self):
         return json.loads(self.metadata_json)
 
 
@@ -115,7 +115,7 @@ class GeneratedImage(Base):
     variation = Column(Integer, nullable=False)
     engineered_prompt = Column(Text, nullable=False)
     file_path = Column(String, nullable=True)
-    score = Column(Real, nullable=True)
+    score = Column(Float, nullable=True)
     rule_violations_json = Column(Text, nullable=True)
     judge_feedback = Column(Text, nullable=True)
     generation_time_ms = Column(Integer, nullable=True)

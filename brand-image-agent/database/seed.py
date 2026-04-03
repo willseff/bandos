@@ -171,13 +171,20 @@ def seed():
     ]
 
     session.add_all(brand_rules + font_rules + logo_rules)
+
+    # Capture values before commit detaches objects
+    brand_id = brand.id
+    font_heading_id, font_heading_path = font_heading.id, font_heading.file_path
+    font_body_id, font_body_path = font_body.id, font_body.file_path
+    logo_id, logo_path = logo.id, logo.file_path
+
     session.commit()
     session.close()
     print("Seeded Meridian Tech brand.")
-    print(f"  Brand ID: {brand.id}")
-    print(f"  Font (heading): {font_heading.id} → {font_heading.file_path}")
-    print(f"  Font (body):    {font_body.id} → {font_body.file_path}")
-    print(f"  Logo:           {logo.id} → {logo.file_path}")
+    print(f"  Brand ID: {brand_id}")
+    print(f"  Font (heading): {font_heading_id} → {font_heading_path}")
+    print(f"  Font (body):    {font_body_id} → {font_body_path}")
+    print(f"  Logo:           {logo_id} → {logo_path}")
     print("\nDrop real font .ttf files and logo .png into uploads/ to enable render_text and composite tools.")
 
 
