@@ -6,7 +6,7 @@ from google.adk.agents import BaseAgent
 from google.adk.agents.invocation_context import InvocationContext
 from google.adk.events import Event, EventActions
 
-from agents.brand_image_agent.tools.generate_image import generate_image
+from ..tools.generate_image import generate_image
 
 
 class ParallelImageGenerator(BaseAgent):
